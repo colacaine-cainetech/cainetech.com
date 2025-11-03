@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CaineTech — Other Services</title>
+
+    <!-- Google Font (optional) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            --bg:#0f1724;
+            --card:#0b1220;
+            --muted:#9aa7b2;
+            --accent:#6be7c4;
+            --glass: rgba(255,255,255,0.03);
+            --radius:12px;
+            --gap:18px;
+            --transition:240ms cubic-bezier(.2,.9,.2,1);
+        }
+        /* Page reset */
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            margin:0;
+            background: radial-gradient(800px 400px at 10% 10%, rgba(39,50,65,0.18), transparent),
+                                    radial-gradient(600px 300px at 90% 80%, rgba(90,60,150,0.06), transparent),
+                                    var(--bg);
+            color:#e6eef3;
+            font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            line-height:1.35;
+            padding:40px;
+        }
+
+        /* Layout */
+        .wrap{
+            max-width:1200px;
+            margin:0 auto;
+        }
+        header{
+            display:flex;
+            gap:20px;
+            align-items:center;
+            margin-bottom:26px;
+        }
+        .brand{
+            display:flex;
+            gap:14px;
+            align-items:center;
+            flex:1;
+            min-width:0;
+        }
+        .logo{
+            width:56px;
+            height:56px;
+            border-radius:12px;
+            background:linear-gradient(135deg,#0ea5a4,#7c3aed);
+            display:grid;
+            place-items:center;
+            box-shadow: 0 6px 18px rgba(20,40,60,0.45);
+            font-weight:800;
+            color:white;
+            font-size:20px;
+        }
+        h1{
+            margin:0;
+            font-size:18px;
+            font-weight:700;
+            letter-spacing:0.2px;
+        }
+        p.lead{
+            margin:0;
+            color:var(--muted);
+            font-size:13px;
+        }
+
+        /* Controls */
+        .controls{
+            display:flex;
+            gap:12px;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+        .search{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            background:var(--glass);
+            padding:8px 12px;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,0.03);
+            color:var(--muted);
+            min-width:260px;
+        }
+        .search input{
+            background:transparent;
+            border:0;
+            outline:0;
+            color:inherit;
+            width:220px;
+            font-size:14px;
+        }
+        .filters{
+            display:flex;
+            gap:8px;
+            align-items:center;
+        }
+        .chip{
+            background:transparent;
+            border:1px solid rgba(255,255,255,0.04);
+            padding:8px 10px;
+            font-size:13px;
+            color:var(--muted);
+            border-radius:999px;
+            cursor:pointer;
+            transition:var(--transition);
+        }
+        .chip.active{
+            background:linear-gradient(90deg, rgba(107,231,196,0.08), rgba(124,58,237,0.06));
+            color:var(--accent);
+            border-color: rgba(107,231,196,0.12);
+            box-shadow: 0 6px 18px rgba(67,88,110,0.08);
+        }
+
+        /* Grid tiling */
+        .grid{
+            margin-top:22px;
+            display:grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap:var(--gap);
+        }
+
+        .card{
+            background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+            border-radius:var(--radius);
+            padding:16px;
+            border:1px solid rgba(255,255,255,0.03);
+            transition:transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            min-height:140px;
+        }
+        .card:hover{
+            transform:translateY(-6px) scale(1.01);
+            box-shadow: 0 18px 40px rgba(7,16,26,0.6);
+            border-color: rgba(107,231,196,0.09);
+        }
+
+        .card-head{
+            display:flex;
+            gap:12px;
+            align-items:center;
+        }
+        .thumb{
+            width:64px;
+            height:64px;
+            border-radius:10px;
+            background:linear-gradient(135deg,#0ea5a4,#7c3aed);
+            display:grid;
+            place-items:center;
+            color:white;
+            font-weight:700;
+            font-size:18px;
+            flex:0 0 64px;
+            box-shadow:inset 0 -6px 14px rgba(0,0,0,0.14);
+        }
+        .meta{
+            min-width:0;
+        }
+        .title{
+            font-weight:700;
+            font-size:15px;
+            margin:0;
+            color:#e6f6ef;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+        .desc{
+            margin:4px 0 0 0;
+            font-size:13px;
+            color:var(--muted);
+            overflow:hidden;
+            text-overflow:ellipsis;
+            display:-webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient:vertical;
+        }
+
+        .tags{
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+        }
+        .tag{
+            font-size:12px;
+            color:var(--muted);
+            background:transparent;
+            border-radius:8px;
+            padding:6px 8px;
+            border:1px solid rgba(255,255,255,0.02);
+        }
+
+        .card-foot{
+            margin-top:auto;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+        }
+        .actions{
+            display:flex;
+            gap:8px;
+            align-items:center;
+        }
+        .btn{
+            background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+            border:1px solid rgba(255,255,255,0.04);
+            color:var(--accent);
+            padding:8px 12px;
+            font-weight:600;
+            font-size:13px;
+            border-radius:10px;
+            cursor:pointer;
+            transition:var(--transition);
+        }
+        .btn.ghost{
+            background:transparent;
+            color:var(--muted);
+            border-color: rgba(255,255,255,0.02);
+            padding:8px;
+            font-size:13px;
+        }
+        .btn:hover{ transform:translateY(-3px) }
+
+        /* Empty / footer */
+        .empty{
+            text-align:center;
+            padding:48px 12px;
+            color:var(--muted);
+            font-size:14px;
+        }
+
+        /* small */
+        @media (max-width:520px){
+            body{padding:18px}
+            .search input{width:110px}
+            .logo{width:48px;height:48px;font-size:18px}
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="brand">
+                <img class="logo" src="assets/logo.png" alt="CaineTech logo" width="56" height="56" loading="lazy" style="object-fit:cover;background:transparent;" />
+                <div>
+                    <h1>CaineTech — Other Services</h1>
+                    <p class="lead">A tiled overview of Cainetech projects — quick links, status and short summaries.</p>
+                </div>
+            </div>
+
+            <div class="controls" role="region" aria-label="controls">
+                <div class="search" title="Search projects">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.7"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <!-- placeholder preserved as comment: "Search projects or tags…" -->
+                    <input id="q" aria-label="Search projects" />
+                </div>
+
+                <!-- filters removed per request -->
+            </div>
+        </header>
+
+        <main>
+            <div id="grid" class="grid" aria-live="polite">
+                <!-- cards will be injected by JS -->
+            </div>
+
+            <div id="empty" class="empty" hidden>
+                No projects found. Try adjusting filters or search.
+            </div>
+        </main>
+    </div>
+
+    <script>
+        
+        // Projects removed from inline sample data to avoid placeholder content.
+        // Original sample data (preserved as a single in-code comment):
+        /*
+        const projects = [
+            { id: 'core', title: 'Cainetech Core', desc: 'Core libraries...', tags: ['infra','sdk'], color: ['#06b6d4','#7c3aed'], url: '#' },
+            { id: 'edge-sync', title: 'Edge Sync', desc: 'Low-latency...', tags: ['iot','infra'], color: ['#16a34a','#059669'], url: '#' },
+            { id: 'cloud-relay', title: 'Cloud Relay', desc: 'Managed relay...', tags: ['cloud','infra'], color: ['#7c3aed','#3b82f6'], url: '#' },
+            { id: 'telemetry', title: 'Telemetry Suite', desc: 'Scalable pipeline...', tags: ['cloud'], color: ['#f59e0b','#ef4444'], url: '#' },
+            { id: 'auth-vault', title: 'Auth Vault', desc: 'Secrets management...', tags: ['infra','cloud'], color: ['#fb7185','#f472b6'], url: '#' },
+            { id: 'ui-kit', title: 'Cainetech UI Kit', desc: 'Design system...', tags: ['sdk'], color: ['#06b6d4','#10b981'], url: '#' },
+            { id: 'analytics', title: 'Analytics Pipeline', desc: 'Event ingestion...', tags: ['cloud'], color: ['#3b82f6','#7c3aed'], url: '#' },
+            { id: 'iot-bridge', title: 'IoT Bridge', desc: 'Protocol adapters...', tags: ['iot'], color: ['#34d399','#06b6d4'], url: '#' }
+        ];
+        */
+        const projects = [
+               { id: 'core', title: 'EzDraw', desc: 'Drawing Utility', color: ['#06b6d4','#7c3aed'], url: 'https://ezdraw.github.io' },
+        ];
+
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const q = document.getElementById('q');
+
+        function createThumb(title, colors){
+            const [c1,c2] = colors;
+            const initials = title.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+            const svg = encodeURIComponent(
+                `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>
+                    <defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='${c1}'/><stop offset='1' stop-color='${c2}'/></linearGradient></defs>
+                    <rect rx='10' width='100%' height='100%' fill='url(#g)'/>
+                    <text x='50%' y='54%' font-family='Inter, Arial' font-weight='700' font-size='20' fill='rgba(255,255,255,0.98)' text-anchor='middle'>${initials}</text>
+                </svg>`
+            );
+            return `data:image/svg+xml;utf8,${svg}`;
+        }
+
+        function render(list){
+            grid.innerHTML = '';
+            if(list.length === 0){
+                empty.hidden = false;
+                return;
+            }
+            empty.hidden = true;
+            for(const p of list){
+                const el = document.createElement('article');
+                el.className = 'card';
+                el.setAttribute('data-tags', Array.isArray(p.tags) ? p.tags.join(' ') : '');
+                el.innerHTML = `
+                    <div class="card-head">
+                        <img class="thumb" src="${createThumb(p.title,p.color)}" alt="${p.title} logo" width="64" height="64" loading="lazy" />
+                        <div class="meta">
+                            <h3 class="title">${p.title}</h3>
+                            <p class="desc">${p.desc}</p>
+                        </div>
+                    </div>
+                    <!-- tags removed from UI; original markup was:
+                         <div class="tags" aria-hidden="true"> <span class="tag">...</span> </div>
+                         The tag values were part of each project object. Tags are intentionally removed per request. -->
+                    <div class="card-foot">
+                        <div style="font-size:13px;color:var(--muted)">${Array.isArray(p.tags)?p.tags.join(' • '):''}</div>
+                        <div class="actions">
+                            <a class="btn" href="${p.url}" aria-label="Open ${p.title}">Open</a>
+                            <button class="btn ghost" onclick="navigator.clipboard?.writeText(location.origin + '${p.url}')" title="Copy link">Copy</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(el);
+            }
+        }
+
+        // initial render
+        render(projects);
+
+        // Search input: filter by title and description only (filters removed)
+        q.addEventListener('input', debounce(() => applyFilters(), 180));
+
+        function applyFilters(){
+            const term = q.value.trim().toLowerCase();
+            const filtered = projects.filter(p => {
+                if(!term) return true;
+                const hay = ((p.title || '') + ' ' + (p.desc || '')).toLowerCase();
+                return hay.includes(term);
+            });
+            render(filtered);
+        }
+
+        // small utility
+        function debounce(fn, wait){
+            let t;
+            return (...args) => {
+                clearTimeout(t);
+                t = setTimeout(()=>fn(...args), wait);
+            };
+        }
+
+        // Keyboard shortcuts for numeric filter toggling removed along with filters
+    </script>
+</body>
+</html>
