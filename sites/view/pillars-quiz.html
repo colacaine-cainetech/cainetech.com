@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Pillars of Buddhism - Quiz Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .question-section {
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: pulse 0.5s;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .next-btn {
+            display: none;
+            margin: 20px auto 0;
+            padding: 15px 40px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .next-btn.show {
+            display: block;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideDown 0.5s;
+        }
+
+        .results h2 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .final-score {
+            font-size: 3em;
+            color: #764ba2;
+            margin: 20px 0;
+        }
+
+        .restart-btn {
+            padding: 15px 40px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .pillar-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .pillar-info h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .game-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🧘 Three Pillars of Buddhism 🙏</h1>
+        <p class="subtitle">Test your knowledge of the Buddhist Triple Gem!</p>
+
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-label">Question</div>
+                <div class="score-value" id="current-question">1</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Score</div>
+                <div class="score-value" id="score">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">Total</div>
+                <div class="score-value" id="total-questions">10</div>
+            </div>
+        </div>
+
+        <div class="question-section" id="question-section">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+            <div class="feedback" id="feedback"></div>
+            <button class="next-btn" id="next-btn">Next Question</button>
+        </div>
+
+        <div class="results" id="results">
+            <h2>🎉 Quiz Complete! 🎉</h2>
+            <div class="final-score" id="final-score"></div>
+            <p id="result-message"></p>
+            <button class="restart-btn" onclick="restartGame()">Play Again</button>
+            <div class="pillar-info">
+                <h3>The Three Pillars (Triple Gem):</h3>
+                <p><strong>Buddha:</strong> The Awakened One - the teacher who discovered the path to enlightenment</p>
+                <p><strong>Dharma:</strong> The Teaching - the Buddhist doctrines and path to liberation</p>
+                <p><strong>Sangha:</strong> The Community - the spiritual community of practitioners</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What are the Three Pillars of Buddhism collectively known as?",
+                options: ["The Triple Gem", "The Noble Truths", "The Eightfold Path", "The Sacred Trinity"],
+                correct: 0,
+                explanation: "The Three Pillars are called the Triple Gem (or Three Jewels): Buddha, Dharma, and Sangha."
+            },
+            {
+                question: "Which pillar represents the teachings and doctrines of Buddhism?",
+                options: ["Buddha", "Dharma", "Sangha", "Karma"],
+                correct: 1,
+                explanation: "Dharma represents the teachings of Buddhism, including the Four Noble Truths and the Eightfold Path."
+            },
+            {
+                question: "What does 'Buddha' literally mean?",
+                options: ["The Holy One", "The Enlightened One", "The Awakened One", "The Peaceful One"],
+                correct: 2,
+                explanation: "Buddha means 'The Awakened One' - referring to one who has awakened to the true nature of reality."
+            },
+            {
+                question: "Which pillar refers to the community of Buddhist practitioners?",
+                options: ["Karma", "Dharma", "Buddha", "Sangha"],
+                correct: 3,
+                explanation: "Sangha refers to the community of Buddhist practitioners, traditionally the monastic community but also all followers of the path."
+            },
+            {
+                question: "Taking refuge in the Three Pillars is a fundamental practice in which religion?",
+                options: ["Hinduism", "Buddhism", "Taoism", "Jainism"],
+                correct: 1,
+                explanation: "Taking refuge in the Buddha, Dharma, and Sangha is a fundamental practice in Buddhism."
+            },
+            {
+                question: "What role does the Sangha play for practitioners?",
+                options: ["It provides spiritual support and guidance", "It collects donations", "It enforces religious laws", "It grants enlightenment"],
+                correct: 0,
+                explanation: "The Sangha provides spiritual friendship, support, and guidance for those following the Buddhist path."
+            },
+            {
+                question: "The Dharma includes which famous Buddhist teaching?",
+                options: ["The Ten Commandments", "The Four Noble Truths", "The Five Pillars", "The Seven Virtues"],
+                correct: 1,
+                explanation: "The Dharma includes the Four Noble Truths, one of the Buddha's most fundamental teachings about suffering and its cessation."
+            },
+            {
+                question: "Who was the historical Buddha?",
+                options: ["Lao Tzu", "Confucius", "Siddhartha Gautama", "Mahavira"],
+                correct: 2,
+                explanation: "The historical Buddha was Siddhartha Gautama, who lived in ancient India and attained enlightenment."
+            },
+            {
+                question: "Beyond the historical figure, what does Buddha also represent?",
+                options: ["Divine power", "The potential for awakening in all beings", "Worldly success", "Supernatural abilities"],
+                correct: 1,
+                explanation: "Buddha represents not just the historical teacher, but also the potential for awakening that exists within all beings."
+            },
+            {
+                question: "What is the relationship between the Three Pillars?",
+                options: ["They are competing paths", "They are all equally essential for Buddhist practice", "One is more important than the others", "They are separate traditions"],
+                correct: 1,
+                explanation: "All Three Pillars are equally essential and interconnected - they form the complete foundation of Buddhist practice."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadQuestion() {
+            answered = false;
+            const q = questions[currentQuestion];
+            document.getElementById('question').textContent = q.question;
+            document.getElementById('current-question').textContent = currentQuestion + 1;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectAnswer(index);
+                optionsDiv.appendChild(optionDiv);
+            });
+
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('next-btn').classList.remove('show');
+        }
+
+        function selectAnswer(selected) {
+            if (answered) return;
+            answered = true;
+
+            const q = questions[currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((opt, index) => {
+                opt.classList.add('disabled');
+                if (index === q.correct) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (selected === q.correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+                document.getElementById('feedback').innerHTML = `
+                    <div style="background: #d4edda; color: #155724; border: 2px solid #28a745;">
+                        ✅ Correct! ${q.explanation}
+                    </div>
+                `;
+            } else {
+                options[selected].classList.add('incorrect');
+                document.getElementById('feedback').innerHTML = `
+                    <div style="background: #f8d7da; color: #721c24; border: 2px solid #dc3545;">
+                        ❌ Incorrect. ${q.explanation}
+                    </div>
+                `;
+            }
+
+            document.getElementById('feedback').classList.add('show');
+            document.getElementById('next-btn').classList.add('show');
+        }
+
+        document.getElementById('next-btn').onclick = function() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        };
+
+        function showResults() {
+            document.getElementById('question-section').style.display = 'none';
+            document.getElementById('results').classList.add('show');
+            
+            const percentage = (score / questions.length * 100).toFixed(0);
+            document.getElementById('final-score').textContent = `${score} / ${questions.length}`;
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = "🌟 Outstanding! You have deep knowledge of the Three Pillars!";
+            } else if (percentage >= 70) {
+                message = "👏 Great job! You understand the fundamentals well!";
+            } else if (percentage >= 50) {
+                message = "👍 Good effort! Keep learning about Buddhism!";
+            } else {
+                message = "📚 Keep studying! The path to understanding is a journey.";
+            }
+            
+            document.getElementById('result-message').textContent = message;
+        }
+
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').textContent = 0;
+            document.getElementById('question-section').style.display = 'block';
+            document.getElementById('results').classList.remove('show');
+            loadQuestion();
+        }
+
+        // Start the game
+        loadQuestion();
+    </script>
+</body>
+</html>
