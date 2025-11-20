@@ -188,6 +188,7 @@
             overflow:hidden;
             text-overflow:ellipsis;
             display:-webkit-box;
+            line-clamp: 2;
             -webkit-line-clamp:2;
             -webkit-box-orient:vertical;
         }
@@ -289,8 +290,7 @@
 
     <script>
         
-        // Projects removed from inline sample data to avoid placeholder content.
-        // Original sample data (preserved as a single in-code comment):
+        // Tags archived in comment to be used later if needed for organization.
         /*
         const projects = [
             { id: 'core', title: 'Cainetech Core', desc: 'Core libraries...', tags: ['infra','sdk'], color: ['#06b6d4','#7c3aed'], url: '#' },
@@ -303,9 +303,10 @@
             { id: 'iot-bridge', title: 'IoT Bridge', desc: 'Protocol adapters...', tags: ['iot'], color: ['#34d399','#06b6d4'], url: '#' }
         ];
         */
-        const projects = [
-               { id: 'core', title: 'EzDraw', desc: 'Drawing Utility', color: ['#06b6d4','#7c3aed'], url: 'https://ezdraw.github.io' },
-        ];
+         const projects = [
+             { id: 'ezdraw', title: 'EzDraw', desc: 'Drawing Utility', color: ['#06b6d4','#7c3aed'], url: 'https://ezdraw.github.io', icon: 'assets/ez.png' },
+             { id: 'archcaine', title: 'ArchCaine', desc: 'Arch Linux Installation', color: ['#06b6d4','#7c3aed'], url: 'https://archcaine.github.io', icon: 'assets/archcaine.svg' },
+         ];
 
     const grid = document.getElementById('grid');
     const empty = document.getElementById('empty');
@@ -335,9 +336,15 @@
                 const el = document.createElement('article');
                 el.className = 'card';
                 el.setAttribute('data-tags', Array.isArray(p.tags) ? p.tags.join(' ') : '');
+
+                // Precompute SVG thumb as a fallback
+                const thumb = createThumb(p.title, p.color || ['#06b6d4','#7c3aed']);
+                // Use provided PNG icon when available; fall back to generated SVG.
+                const iconSrc = p.icon ? p.icon : thumb;
+
                 el.innerHTML = `
                     <div class="card-head">
-                        <img class="thumb" src="${createThumb(p.title,p.color)}" alt="${p.title} logo" width="64" height="64" loading="lazy" />
+                        <img class="thumb" src="${iconSrc}" alt="${p.title} logo" width="64" height="64" loading="lazy" onerror="this.onerror=null;this.src='${thumb}'" />
                         <div class="meta">
                             <h3 class="title">${p.title}</h3>
                             <p class="desc">${p.desc}</p>
